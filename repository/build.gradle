@@ -1,0 +1,47 @@
+buildscript {
+	repositories {
+		mavenLocal()
+		maven { url "https://repo1.maven.org/maven2" }
+	}
+	dependencies {
+		classpath "org.openapitools:openapi-generator-gradle-plugin:6.2.0"
+	}
+	ext {
+		springBootVersion = '2.7.4'
+	}
+}
+
+plugins {
+	id 'org.springframework.boot' version "$springBootVersion"
+}
+
+ext {
+	springBootVersion = '2.7.4'
+	mapstructVersion  = '1.5.3.Final'
+	immutablesVersion = '2.9.3'
+}
+
+
+apply plugin: 'java'
+apply plugin: 'io.spring.dependency-management'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation project(':framework:core')
+	implementation project(':model')
+
+	implementation "org.mapstruct:mapstruct:$mapstructVersion"
+    annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
+
+	implementation group: 'io.projectreactor', name: 'reactor-core', version: '3.5.0'
+
+	compileOnly  group: 'org.immutables', name: 'value', version: "$immutablesVersion"
+	annotationProcessor group: 'org.immutables', name: 'value', version: "$immutablesVersion"
+	implementation group: 'org.immutables', name: 'value-annotations', version: "$immutablesVersion"
+	annotationProcessor group: 'org.immutables', name: 'value-annotations', version: "$immutablesVersion"
+	implementation group: 'org.immutables', name: 'builder', version: "$immutablesVersion"
+	implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
+}

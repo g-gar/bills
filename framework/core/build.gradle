@@ -1,0 +1,20 @@
+apply plugin: 'java'
+
+ext {
+    springBootVersion = '2.7.4'
+    mapstructVersion  = '1.5.3.Final'
+    lombokVersion     = '1.18.24'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':framework:function')
+
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: "$lombokVersion"
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: "$lombokVersion"
+    testCompileOnly group: 'org.projectlombok', name: 'lombok', version: "$lombokVersion"
+    testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: "$lombokVersion"
+}

@@ -1,0 +1,21 @@
+ext {
+	immutablesVersion = '2.9.3'
+}
+
+apply plugin: 'java'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation project(':framework:core')
+
+	compileOnly  group: 'org.immutables', name: 'value', version: "$immutablesVersion"
+	annotationProcessor group: 'org.immutables', name: 'value', version: "$immutablesVersion"
+	implementation group: 'org.immutables', name: 'value-annotations', version: "$immutablesVersion"
+	annotationProcessor group: 'org.immutables', name: 'value-annotations', version: "$immutablesVersion"
+	implementation group: 'org.immutables', name: 'builder', version: "$immutablesVersion"
+
+	implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
+}
