@@ -28,16 +28,16 @@ public interface SaveOrUpdateEntityApiComponent<T extends BaseEntity<ID>, ID> ex
 	default Result<T> execute(SaveOrUpdateEntityUseCaseParameters<T> arguments) {
 		Result<T> result = null;
 		try {
-			Result<T> temp = Result.from(this.findEntityByIdPort()::execute, Objects.requireNonNull(arguments.entity().get()).getId());
-			if (temp.hasFailed() || temp.get().isEmpty()) {
-				result = Result.from(this.saveOrUpdateEntityPort()::execute, arguments.entity().get());
+			Result<T> temp = Result.of(this.findEntityByIdPort()::execute, Objects.requireNonNull(arguments.entity().get()).getId());
+			if (temp.hasFailed() || temp.isPresent()) {
+				result = Result.of(this.saveOrUpdateEntityPort()::execute, arguments.entity().get());
 			} else {
 //				TODO: update
 				int a = 0;
 			}
 		} catch (Exception exception) {
 			result = Result.<T>builder()
-				.exception(exception)
+				.exception(Optional.of(exception))
 				.build();
 		}
 		return result;

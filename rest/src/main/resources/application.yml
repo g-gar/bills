@@ -19,3 +19,14 @@ server:
 logging:
   level:
     root: info
+
+springdoc:
+  packagesToScan: com.ggar.bills.rest
+  pathsToMatch: /v1, /api/**, /api/actuator/**
+  swagger-ui:
+    path: /swagger-ui
+  show-actuator: true
+#  api-docs:
+#    enabled: true
+#    path: /api-docs
+#    version: openapi_3_0

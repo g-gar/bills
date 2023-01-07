@@ -11,8 +11,6 @@ repositories {
 }
 
 dependencies {
-    implementation project(':framework:function')
-
     compileOnly group: 'org.projectlombok', name: 'lombok', version: "$lombokVersion"
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: "$lombokVersion"
     testCompileOnly group: 'org.projectlombok', name: 'lombok', version: "$lombokVersion"

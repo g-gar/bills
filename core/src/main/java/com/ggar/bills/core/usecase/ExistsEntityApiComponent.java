@@ -17,19 +17,19 @@ import java.util.function.Predicate;
 public interface ExistsEntityApiComponent<T extends BaseEntity<ID>, ID> extends UseCase<ExistsEntityApiComponent.ExistsEntityUseCaseParameters<T, ID>, Boolean> {
 
 	FindEntityByIdPort<T, ID> findEntityByIdPort();
-	FindEntityByFilterPort<T> findEntityByFilterPort();
+	FindEntityByFilterPort<T, ID> findEntityByFilterPort();
 
 	@Override
 	default Result<Boolean> execute(ExistsEntityUseCaseParameters<T, ID> arguments) {
 		Result<Boolean> result = Result.<Boolean>builder()
-			.exception(new NullPointerException())
+			.exception(Optional.of(new NullPointerException()))
 			.build();
 
 		if (arguments.id().isPresent()) {
-			result = Result.from(this.findEntityByIdPort()::execute, arguments.id().get()).process(Objects::nonNull);
+			result = Result.of(this.findEntityByIdPort()::execute, arguments.id().get()).map(Objects::nonNull);
 		}
 		if (arguments.filter().isPresent()) {
-			result = Result.from(this.findEntityByFilterPort()::execute, arguments.filter().get()).process(Objects::nonNull);
+			result = Result.of(this.findEntityByFilterPort()::execute, arguments.filter().get()).map(Objects::nonNull);
 		}
 		return result;
 	}

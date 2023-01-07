@@ -4,13 +4,16 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.immutables.value.Value;
 
+import java.util.UUID;
+
 @Value.Immutable
 @Value.Style(allParameters = true, optionalAcceptNullable = true)
-@JsonSerialize(as = ImmutableCreateUserRequest.class)
-@JsonDeserialize(as = ImmutableCreateUserRequest.class)
-public interface CreateUserRequest {
+@JsonSerialize(as = ImmutableCreateAccountRequest.class)
+@JsonDeserialize(as = ImmutableCreateAccountRequest.class)
+public interface CreateAccountRequest {
 
-	String username();
-	String password();
+	String name();
+	UUID paymentId();
+	UUID userId();
 
 }

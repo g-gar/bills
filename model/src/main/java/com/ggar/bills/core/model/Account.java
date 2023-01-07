@@ -1,8 +1,8 @@
 package com.ggar.bills.core.model;
 
-import com.ggar.bills.core.model.field.AccountBalance;
 import com.ggar.bills.core.model.field.AccountName;
 import com.ggar.bills.core.model.field.Id;
+import com.ggar.bills.core.model.field.ImmutableId;
 import com.ggar.framework.core.BaseEntity;
 import org.immutables.value.Value;
 
@@ -17,23 +17,12 @@ public interface Account extends BaseEntity<Id> {
 	@Override
 	@Value.Default
 	default Id getId() {
-		return Id.NEW;
+		return ImmutableId.builder().build();
 	}
 
-	@Value.Default
-	default AccountName name() {
-		return AccountName.UNDEFINED;
-	}
+	AccountName name();
 
-	@Value.Default
-	default AccountBalance balance() {
-		return AccountBalance.UNDEFINED;
-	}
-
-	@Value.Default
-	default Payment payment() {
-		return Payment.UNDEFINED;
-	}
+	Payment payment();
 
 	@Value.Default
 	default Map<Id, Bill> bills() {

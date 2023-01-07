@@ -3,8 +3,6 @@ package com.ggar.bills.rest.mapper;
 import com.ggar.bills.core.model.Account;
 import com.ggar.bills.core.model.ImmutableAccount;
 import com.ggar.bills.core.model.ImmutablePayment;
-import com.ggar.bills.core.model.field.AccountName;
-import com.ggar.bills.core.model.field.ImmutableAccountBalance;
 import com.ggar.bills.core.model.field.ImmutableAccountName;
 import com.ggar.bills.core.model.field.ImmutableId;
 import com.ggar.bills.rest.model.AccountDto;
@@ -16,8 +14,8 @@ public interface AccountMapper {
 	@Mappings({
 		@Mapping(target = "accountId", expression = "java(account.getId().value())"),
 		@Mapping(target = "paymentId", expression = "java(account.payment().getId().value())"),
-		@Mapping(target = "balance", expression = "java(account.balance().value().get())"),
-		@Mapping(target = "title", expression = "java(account.name().value().get())"),
+		@Mapping(target = "balance", expression = "java(account.balance().value())", ignore = true),
+		@Mapping(target = "title", expression = "java(account.name().value())"),
 	})
 	AccountDto map(Account account);
 
@@ -25,7 +23,7 @@ public interface AccountMapper {
 		return ImmutableAccount.builder()
 			.id(ImmutableId.builder().value(accountDto.accountId()).build())
 			.name(ImmutableAccountName.builder().value(accountDto.title()).build())
-			.balance(ImmutableAccountBalance.builder().value(accountDto.balance()).build())
+//			.balance(ImmutableAccountBalance.builder().value(accountDto.balance()).build())
 			.payment(ImmutablePayment.builder().id(ImmutableId.builder().value(accountDto.paymentId()).build()).build())
 			.build();
 	}

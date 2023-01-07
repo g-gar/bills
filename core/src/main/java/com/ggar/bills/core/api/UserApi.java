@@ -14,9 +14,9 @@ public interface UserApi extends AbstractApi<User, Id> {
 
 	RegisterAccountToUserComponent registerAccountToUserComponent();
 
-	default Result<User> registerAccount(Id id, Account account) {
+	default Result<User> registerAccount(User user, Account account) {
 		return this.registerAccountToUserComponent().execute(ImmutableRegisterAccountToUserArguments.builder()
-			.userId(id)
+			.user(user)
 			.account(account)
 			.build()
 		);

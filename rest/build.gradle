@@ -13,6 +13,7 @@ buildscript {
 
 plugins {
 	id 'org.springframework.boot' version "$springBootVersion"
+	id("org.springdoc.openapi-gradle-plugin") version "1.6.0"
 }
 
 ext {
@@ -27,6 +28,10 @@ apply plugin: 'io.spring.dependency-management'
 
 repositories {
 	mavenCentral()
+}
+
+springBoot {
+	mainClass = 'com.ggar.bills.rest.Application'
 }
 
 dependencies {
@@ -48,4 +53,7 @@ dependencies {
 	annotationProcessor group: 'org.immutables', name: 'value-annotations', version: "$immutablesVersion"
 	implementation group: 'org.immutables', name: 'builder', version: "$immutablesVersion"
 	implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
+	implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.14'
+	implementation group: 'org.springdoc', name: 'springdoc-openapi-javadoc', version: '1.6.14'
+
 }

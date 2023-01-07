@@ -2,28 +2,27 @@ package com.ggar.bills.rest.mapper;
 
 import com.ggar.bills.core.model.ImmutableUser;
 import com.ggar.bills.core.model.User;
-import com.ggar.bills.core.model.field.ImmutableId;
 import com.ggar.bills.rest.model.UserDto;
-import org.mapstruct.*;
+import com.ggar.bills.rest.model.request.CreateUserRequest;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
+import org.mapstruct.ReportingPolicy;
 
-@Mapper
+@Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface UserMapper {
 
 	@Mappings({
 		@Mapping(target = "userId", expression = "java(user.getId().value())"),
-		@Mapping(target = "username", expression = "java(user.username())")
+		@Mapping(target = "username", expression = "java(user.username())"),
+		@Mapping(target = "accounts", expression = "java(user.accounts())"),
+		@Mapping(target = "putAccounts", ignore = true),
+		@Mapping(target = "putAllAccounts", ignore = true)
 	})
 	UserDto map(User user);
 
-	default User map(UserDto userDto) {
-		return ImmutableUser.builder()
-			.id(ImmutableId.builder().value(userDto.userId()).build())
-			.username(userDto.username())
-			.build();
+	default User map(CreateUserRequest createUserRequest) {
+		return ImmutableUser.of(createUserRequest.username(), createUserRequest.password());
 	}
 
-	@ObjectFactory
-	default User create() {
-		return ImmutableUser.builder().build();
-	}
 }

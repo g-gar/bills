@@ -19,7 +19,19 @@ public interface AbstractApi<T extends BaseEntity<ID>, ID> extends Api<T, ID> {
 
 	@Override
 	default Result<T> find(ID id) {
-		return this.findEntityApiComponent().execute(() -> id);
+		return this.findEntityApiComponent().execute(ImmutableFindEntityUseCaseArguments.<T, ID>builder()
+			.id(id)
+			.build()
+		);
+	}
+
+	@Override
+	default Result<T> find(Predicate<T> filter) {
+		return this.findEntityApiComponent()
+			.execute(ImmutableFindEntityUseCaseArguments.<T, ID>builder()
+			.filter(filter)
+			.build()
+		);
 	}
 
 	@Override

@@ -11,7 +11,6 @@ public interface Id {
 	public static final Id NEW = ImmutableId.builder().build();
 
 	@Value.Default
-	@Value.Parameter(value = false)
 	default UUID value() {
 		return UUID.randomUUID();
 	}

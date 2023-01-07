@@ -13,19 +13,15 @@ import java.util.UUID;
 @Value.Style(allParameters = true)
 public interface User extends BaseEntity<Id> {
 
-	public static final User UNDEFINED = ImmutableUser.builder().build();
-
 	@Override
 	@Value.Default
 	@Value.Parameter(value = false)
 	default Id getId() {
-		return ImmutableId.builder().build();
+		return ImmutableId.of(UUID.randomUUID());
 	}
 
-	@Value.Parameter
 	String username();
 
-	@Value.Parameter
 	String hash();
 
 	@Value.Default

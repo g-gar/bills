@@ -28,7 +28,6 @@ repositories {
 
 dependencies {
 	implementation project(':framework:core')
-	implementation project(':framework:function')
 	implementation project(':model')
 
 	compileOnly  group: 'org.immutables', name: 'value', version: "$immutablesVersion"

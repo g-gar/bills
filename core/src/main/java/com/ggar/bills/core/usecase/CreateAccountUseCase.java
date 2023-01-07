@@ -13,7 +13,6 @@ import com.ggar.framework.core.UseCaseArguments;
 import org.immutables.value.Value;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Value.Immutable
 @Value.Style(allMandatoryParameters = true)
@@ -31,16 +30,13 @@ public interface CreateAccountUseCase extends UseCase<CreateAccountUseCase.Creat
 			Account account = ImmutableAccount.builder()
 				.id(ImmutableId.builder().build())
 				.name(arguments.accountName())
-				.balance(arguments.accountBalance().get())
 				.payment(arguments.payment())
 				.build();
 			Result<Account> createAccountResult = this.getAccountApi().saveOrUpdate(account);
-			if (!createAccountResult.hasFailed() && createAccountResult.get().isPresent()) {
-				result = this.getUserApi().registerAccount(userId, createAccountResult.get().get());
+			if (!createAccountResult.hasFailed() && createAccountResult.isPresent()) {
+				result = this.getUserApi().registerAccount(result.get(), createAccountResult.get());
 			} else {
-				result = Result.<User>builder()
-					.exception(createAccountResult.getException())
-					.build();
+				result = Result.failed(createAccountResult.getException().get());
 			}
 		}
 		return result;
@@ -54,7 +50,7 @@ public interface CreateAccountUseCase extends UseCase<CreateAccountUseCase.Creat
 		@Value.Default
 		@Value.Parameter(value = false)
 		default Optional<AccountBalance> accountBalance() {
-			return Optional.of(ImmutableAccountBalance.of(Optional.of(0d)));
+			return Optional.of(ImmutableAccountBalance.of(0d));
 		};
 		Payment payment();
 	}

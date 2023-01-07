@@ -5,13 +5,11 @@ import com.ggar.bills.core.api.UserApi;
 import com.ggar.bills.core.model.ImmutableUser;
 import com.ggar.bills.core.model.User;
 import com.ggar.bills.core.model.field.Id;
-import com.ggar.bills.core.port.FindEntityByFilterPort;
-import com.ggar.bills.core.port.FindEntityByIdPort;
-import com.ggar.bills.core.port.RegisterAccountToUserPort;
-import com.ggar.bills.core.port.SaveOrUpdateEntityPort;
+import com.ggar.bills.core.port.*;
 import com.ggar.bills.core.usecase.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import reactor.core.publisher.Flux;
 
 import java.util.Map;
 import java.util.Objects;
@@ -31,8 +29,8 @@ public class UserApiConfiguration {
 	}
 
 	@Bean
-	public FindEntityByFilterPort<User> findEntityByFilterPort() {
-		return filter -> null;
+	public FindEntityByFilterPort<User, Id> findEntityByFilterPort() {
+		return filter -> UserRepository.cache.values().stream().filter(filter).findAny().get();
 	}
 
 	@Bean
@@ -45,12 +43,17 @@ public class UserApiConfiguration {
 	}
 
 	@Bean
-	public FindEntityApiComponent<User, Id> findEntityApiComponent(UserApi userApi) {
-		return ImmutableFindEntityApiComponent.of(userApi);
+	public FindAllEntitiesPort<User, Id> findAllEntitiesPort() {
+		return e -> Flux.<User>empty();
 	}
 
 	@Bean
-	public ExistsEntityApiComponent<User, Id> existsEntityApiComponent(FindEntityByIdPort<User, Id> findEntityByIdPort, FindEntityByFilterPort<User> findEntityByFilterPort) {
+	public FindEntityApiComponent<User, Id> findEntityApiComponent(FindEntityByIdPort<User, Id> findEntityByIdPort, FindEntityByFilterPort<User, Id> findEntityByFilterPort) {
+		return ImmutableFindEntityApiComponent.of(findEntityByIdPort, findEntityByFilterPort);
+	}
+
+	@Bean
+	public ExistsEntityApiComponent<User, Id> existsEntityApiComponent(FindEntityByIdPort<User, Id> findEntityByIdPort, FindEntityByFilterPort<User, Id> findEntityByFilterPort) {
 		return ImmutableExistsEntityApiComponent.<User, Id>builder()
 			.findEntityByFilterPort(findEntityByFilterPort)
 			.findEntityByIdPort(findEntityByIdPort)
@@ -66,8 +69,10 @@ public class UserApiConfiguration {
 	}
 
 	@Bean
-	public FindAllEntitiesApiComponent<User, Id> findAllEntitiesApiComponent(UserApi userApi) {
-		return null;
+	public FindAllEntitiesApiComponent<User, Id> findAllEntitiesApiComponent(FindAllEntitiesPort<User, Id> findAllEntitiesPort) {
+		return ImmutableFindAllEntitiesApiComponent.<User, Id>builder()
+			.findAllEntitiesPort(findAllEntitiesPort)
+			.build();
 	}
 
 	@Bean

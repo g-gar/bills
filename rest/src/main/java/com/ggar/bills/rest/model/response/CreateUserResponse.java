@@ -1,4 +1,4 @@
-package com.ggar.bills.rest.model;
+package com.ggar.bills.rest.model.response;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -11,9 +11,9 @@ import java.util.UUID;
 
 @Value.Immutable
 @Value.Style(allParameters = true, optionalAcceptNullable = true)
-@JsonSerialize(as = ImmutableUserDto.class)
-@JsonDeserialize(as = ImmutableUserDto.class)
-public interface UserDto {
+@JsonSerialize(as = ImmutableCreateUserResponse.class)
+@JsonDeserialize(as = ImmutableCreateUserResponse.class)
+public interface CreateUserResponse {
 
 	UUID userId();
 	String username();
